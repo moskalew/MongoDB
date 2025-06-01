@@ -8,6 +8,7 @@ const {
   removeNote,
   updateNote,
 } = require('./notes.controller');
+const { addUser } = require('./users.controller');
 
 const port = 3000;
 const app = express();
@@ -22,6 +23,27 @@ app.use(
     extended: true,
   })
 );
+
+app.get('/register', async (req, res) => {
+  res.render('register', {
+    title: 'Express App',
+    error: undefined,
+  });
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    await addUser(req.body.email, req.body.password);
+
+    res.redirect('/login');
+  } catch (e) {
+    console.log(e);
+    res.render('register', {
+      title: 'Express App',
+      error: e.message,
+    });
+  }
+});
 
 app.get('/', async (req, res) => {
   res.render('index', {
