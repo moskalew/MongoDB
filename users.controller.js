@@ -1,7 +1,7 @@
 const User = require('./models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'test';
+const { JWT_SECRET } = require('./constants');
 
 async function addUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);

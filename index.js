@@ -10,6 +10,7 @@ const {
   updateNote,
 } = require('./notes.controller');
 const { addUser, loginUser } = require('./users.controller');
+const auth = require('./middlewares/auth');
 
 const port = 3000;
 const app = express();
@@ -75,13 +76,21 @@ app.post('/register', async (req, res) => {
   }
 });
 
+app.use(auth);
+
 app.get('/', async (req, res) => {
   res.render('index', {
     title: 'Express App',
     notes: await getNotes(),
     created: false,
     error: false,
+    user: req.user,
   });
+});
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.redirect('/login');
 });
 
 app.post('/', async (req, res) => {
