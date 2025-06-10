@@ -63,7 +63,10 @@
           <li
             class="list-group-item d-flex justify-content-between align-items-center"
           >
-            <span><%= notes[i].title %></span>
+            <div>
+              <strong><%= notes[i].title %></strong>
+              <span style="margin-left: 50px"> <%= notes[i].owner %></span>
+            </div>
             <div>
               <button
                 class="btn btn-primary"

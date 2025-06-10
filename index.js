@@ -95,12 +95,13 @@ app.post('/logout', (req, res) => {
 
 app.post('/', async (req, res) => {
   try {
-    await addNote(req.body.title);
+    await addNote(req.body.title, req.user.email);
     res.render('index', {
       title: 'Express App',
       notes: await getNotes(),
       created: true,
       error: false,
+      user: req.user,
     });
   } catch (e) {
     console.error('Creation error', e);
@@ -109,6 +110,7 @@ app.post('/', async (req, res) => {
       notes: await getNotes(),
       created: false,
       error: true,
+      user: req.user,
     });
   }
 });
@@ -120,6 +122,7 @@ app.delete('/:id', async (req, res) => {
     notes: await getNotes(),
     created: false,
     error: false,
+    user: req.user,
   });
 });
 
@@ -130,6 +133,7 @@ app.put('/:id', async (req, res) => {
     notes: await getNotes(),
     created: false,
     error: false,
+    user: req.user,
   });
 });
 
