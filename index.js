@@ -85,6 +85,7 @@ app.get('/', async (req, res) => {
     created: false,
     error: false,
     user: req.user,
+    userEmail: req.user.email,
   });
 });
 
@@ -102,6 +103,7 @@ app.post('/', async (req, res) => {
       created: true,
       error: false,
       user: req.user,
+      userEmail: req.user.email,
     });
   } catch (e) {
     console.error('Creation error', e);
@@ -110,31 +112,57 @@ app.post('/', async (req, res) => {
       notes: await getNotes(),
       created: false,
       error: true,
+      userEmail: req.user.email,
+
       user: req.user,
     });
   }
 });
 
 app.delete('/:id', async (req, res) => {
-  await removeNote(req.params.id);
-  res.render('index', {
-    title: 'Express App',
-    notes: await getNotes(),
-    created: false,
-    error: false,
-    user: req.user,
-  });
+  try {
+    await removeNote(req.params.id);
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: false,
+      error: false,
+      user: req.user,
+      userEmail: req.user.email,
+    });
+  } catch (e) {
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: false,
+      error: e.message,
+      user: req.user,
+      userEmail: req.user.email,
+    });
+  }
 });
 
 app.put('/:id', async (req, res) => {
-  await updateNote({ id: req.params.id, title: req.body.title });
-  res.render('index', {
-    title: 'Express App',
-    notes: await getNotes(),
-    created: false,
-    error: false,
-    user: req.user,
-  });
+  try {
+    await updateNote({ id: req.params.id, title: req.body.title });
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: false,
+      error: false,
+      user: req.user,
+      userEmail: req.user.email,
+    });
+  } catch (e) {
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: false,
+      error: e.message,
+      user: req.user,
+      userEmail: req.user.email,
+    });
+  }
 });
 
 mongoose

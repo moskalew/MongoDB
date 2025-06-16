@@ -39,20 +39,19 @@
       <% } %>
     </div>
 
-    <% if (created) {%>
-    <div class="alert alert-success">Note has been created!</div>
-    <% } %> <% if (error) {%>
-    <div class="alert alert-danger">Something went wrong!</div>
-    <% } %>
-
     <div class="container">
+      <% if (created) { %>
+      <div class="alert alert-success">Note has been created!</div>
+      <% } %> <% if (error) { %>
+      <div class="alert alert-danger">Something went wrong!</div>
+      <% } %>
+
       <h1><%= title %></h1>
 
       <form action="/" method="post" class="mb-2">
         <div class="form-group mb-2">
           <input type="text" class="form-control" name="title" required />
         </div>
-
         <button class="btn btn-primary" type="submit">Create!</button>
       </form>
 
@@ -65,11 +64,12 @@
           >
             <div>
               <strong><%= notes[i].title %></strong>
-              <span style="margin-left: 50px"> <%= notes[i].owner %></span>
+              <span class="ms-3 text-muted"><%= notes[i].owner %></span>
             </div>
+            <% if (notes[i].owner === userEmail) { %>
             <div>
               <button
-                class="btn btn-primary"
+                class="btn btn-primary btn-sm me-2"
                 data-type="edit"
                 data-id="<%= notes[i].id %>"
                 data-title="<%= notes[i].title %>"
@@ -77,13 +77,14 @@
                 Редактировать
               </button>
               <button
-                class="btn btn-danger"
+                class="btn btn-danger btn-sm"
                 data-type="remove"
                 data-id="<%= notes[i].id %>"
               >
                 &times;
               </button>
             </div>
+            <% } %>
           </li>
           <% } %>
         </ul>
