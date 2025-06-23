@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
   try {
     const token = await loginUser(req.body.email, req.body.password);
 
-    res.cookie('token', token);
+    res.cookie('token', token, { httpOnly: true });
 
     res.redirect('/');
   } catch (e) {
@@ -74,6 +74,12 @@ app.post('/register', async (req, res) => {
       error: e.message,
     });
   }
+});
+
+app.get('/logout', async (req, res) => {
+  res.cookie('token', '', { httpOnly: true });
+
+  res.redirect('/login');
 });
 
 app.use(auth);
